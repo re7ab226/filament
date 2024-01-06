@@ -9,6 +9,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,7 +21,7 @@ class StateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
-    protected static ?int $navigationSort=1;//  (تصنيف)بيعمل جروب
+    protected static ?int $navigationSort=1;//  ()بيعمل للصفحه ترقيم ايه يجي قبل ايه 
 
 
     public static function form(Form $form): Form
@@ -56,7 +58,8 @@ class StateResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                ->sortable()
+                    ->searchable(isIndividual:true),//دا ببيخصص ال search للحاجه دي 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -70,6 +73,8 @@ class StateResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -78,7 +83,16 @@ class StateResource extends Resource
                 ]),
             ]);
     }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('country_id'),
+                TextEntry::make('name'),
 
+ 
+            ]);
+    }
     public static function getRelations(): array
     {
         return [

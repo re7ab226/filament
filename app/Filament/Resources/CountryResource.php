@@ -10,6 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Section;
+
+use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -60,7 +64,19 @@ class CountryResource extends Resource
                 ]),
             ]);
     }
-
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+        
+            ->schema([
+                Section::make('countries info')
+                ->schema([TextEntry::make('name')->label('country name')
+                ])
+                //->coulmn(2) الجزء دا خاص بالتنسيق
+             ]);
+ 
+       
+    }
     public static function getRelations(): array
     {
         return [
@@ -73,7 +89,7 @@ class CountryResource extends Resource
         return [
             'index' => Pages\ListCountries::route('/'),
             'create' => Pages\CreateCountry::route('/create'),
-            'view' => Pages\ViewCountry::route('/{record}'),
+            // 'view' => Pages\ViewCountry::route('/{record}'),//لم عملنا لدا كومنت هيظهر الفيو في الصفحه نفسها
             'edit' => Pages\EditCountry::route('/{record}/edit'),
         ];
     }

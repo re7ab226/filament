@@ -10,6 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Infolists\Components\Section;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -34,11 +38,12 @@ class DepartmentResource extends Resource
     }
 
     public static function table(Table $table): Table
-    {
+    {//table دا لازمته انه بيظهر لي في ال view
         return $table
             ->columns([
-                //
-            ])
+                Tables\Columns\TextColumn::make('name')
+                ->searchable(),
+                      ])
             ->filters([
                 //
             ])
@@ -52,7 +57,22 @@ class DepartmentResource extends Resource
                 ]),
             ]);
     }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            
+        ->schema([
+            Section::make('depRT info')//عامل سيكشن في حاله ال VIEW
+            ->schema([
+                TextEntry::make('name')->label('department name'),
+                TextEntry::make('employ_count')
+            ->state(function (Model $record): int {
+                return $record->employees()->count();
+            })//في الفيو بتعرفك كم حد من الاعضاء واخد الصنف دا 
+            ])
+        ]);
 
+    }
     public static function getRelations(): array
     {
         return [
@@ -65,7 +85,7 @@ class DepartmentResource extends Resource
         return [
             'index' => Pages\ListDepartments::route('/'),
             'create' => Pages\CreateDepartment::route('/create'),
-            'view' => Pages\ViewDepartment::route('/{record}'),
+        //    'view' => Pages\ViewDepartment::route('/{record}'),
             'edit' => Pages\EditDepartment::route('/{record}/edit'),
         ];
     }

@@ -9,6 +9,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
+use Illuminate\Database\Eloquent\Model;
+
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -49,6 +53,7 @@ class CityResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                ->label('city name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -72,7 +77,15 @@ class CityResource extends Resource
                 ]),
             ]);
     }
-
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('state_id'),
+                TextEntry::make('name'),//دي بتهندل ال viewللعنصر الواحد
+ 
+            ]);
+    }
     public static function getRelations(): array
     {
         return [
