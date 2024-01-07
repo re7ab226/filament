@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StateResource\Pages;
-use App\Filament\Resources\StateResource\RelationManagers;
-use App\Models\State;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\TextEntry;
+use App\Models\State;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry;
+use App\Filament\Resources\StateResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\StateResource\RelationManagers;
+use App\Filament\Resources\StateResource\RelationManagers\CityRelationManager;
+use App\Filament\Resources\StateResource\RelationManagers\CitiesRelationManager;
+use App\Filament\Resources\StateResource\RelationManagers\EmployeesRelationManager;
 
 class StateResource extends Resource
 {
@@ -28,7 +31,7 @@ class StateResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('country_id')
+                Forms\Components\Select::make('county_id')
              
                     ->relationship(name:'country',titleAttribute:'name')
                     ->native(false)// بيتحكم في شكل الدروب داون
@@ -54,7 +57,7 @@ class StateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('country_id')
+                Tables\Columns\TextColumn::make('county_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -87,7 +90,7 @@ class StateResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('country_id'),
+                TextEntry::make('county_id'),
                 TextEntry::make('name'),
 
  
@@ -96,7 +99,8 @@ class StateResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CitiesRelationManager::class,
+            EmployeesRelationManager::class
         ];
     }
 

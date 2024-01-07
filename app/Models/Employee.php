@@ -16,7 +16,7 @@ class Employee extends Model
         'county_id',
         'state_id',
         'city-id',
-        'department-id',
+        'department_id',
         'f-name',
         'l-name',
         'email',

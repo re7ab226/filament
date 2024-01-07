@@ -2,25 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Employee;
 use Doctrine\DBAL\Query;
-use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Notifications\Collection;
-use Filament\Infolists\Components\Section;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Table;
 use Filament\Resources\Get;
 use Filament\Resources\Set;
-
+use Illuminate\Support\Carbon;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Filament\Notifications\Collection;
+use Filament\Tables\Filters\Indicator;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
 
 class EmployeeResource extends Resource
 {
@@ -66,7 +71,7 @@ class EmployeeResource extends Resource
                     ->searchable()
                 ->preload()
                     ->required(),
-                    Forms\Components\Select::make('department-id')
+                    Forms\Components\Select::make('department_id')
                     ->relationship(name:'department',titleAttribute:'name')
                     ->native(false)// بيتحكم في شكل الدروب داون
                         ->searchable()
@@ -127,7 +132,7 @@ class EmployeeResource extends Resource
 
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('department-id')
+                Tables\Columns\TextColumn::make('department_id')
                 ->visible(!auth()->user()->email=='yousra@gmail')//دا العكس بقي لو اليوزر دادخل ماتبينش ليه حاجه
                 ->toggleable(isToggledHiddenByDefault: true)
 
@@ -162,9 +167,50 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('f-name','desc')
-            ->filters([
-                //
-            ])
+//////////////////////////////دا عشان عامله علاقه many to many with department ععرفت اعمل فلتر بالموديل 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ->filters([
+                SelectFilter::make('Department')
+                ->relationship('department', 'name')
+                ->searchable()
+                ->preload()
+                ->label('filter by department')
+                ->indicator('department'),
+                //بتعرفك انت بتبحث عن ايه 
+                // Filter::make('created_at')
+                // ->form([
+                //     DatePicker::make('created_from'),
+                //     DatePicker::make('created_until'),
+                // ])
+                // ->query(function (Builder $query, array $data): Builder {
+                //     return $query
+                //         ->when(
+                //             $data['created_from'],
+                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                //         )
+                //         ->when(
+                //             $data['created_until'],
+                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                //         );
+                // })
+                // ->indicateUsing(function (array $data): array {
+                //     $indicators = [];
+             
+                //     if ($data['from'] ?? null) {
+                //         $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['from'])->toFormattedDateString())
+                //             ->removeField('from');
+                //     }
+             
+                //     if ($data['until'] ?? null) {
+                //         $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['until'])->toFormattedDateString())
+                //             ->removeField('until');
+                //     }
+             
+                //     return $indicators;
+                // })
+                                       
+            ],layout: FiltersLayout::Modal)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -174,6 +220,7 @@ class EmployeeResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+            
     }
     public static function infolist(Infolist $infolist): Infolist
     {
@@ -185,7 +232,7 @@ class EmployeeResource extends Resource
             TextEntry::make('state_id')->label('state'),
                  TextEntry::make('county_id')->label('country'),//دي بتهندل ال viewللعنصر الواحد
                  TextEntry::make('city-id')->label('city'),
-                  TextEntry::make('department-id')->label('department'),
+                  TextEntry::make('department_id')->label('department'),
                   ])
                   ->columns(4),
             Section::make('user info')//عامل سيكشن في حاله ال VIEW
@@ -206,7 +253,8 @@ class EmployeeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //php artisan make:filament-relation-manager بعد ما اعمل الامر دا اروح ع هنا واعمل العلاقه 
+          // 
         ];
     }
 

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Country extends Model
@@ -14,5 +15,14 @@ class Country extends Model
     
         'name'
     ];
+
+    
+    public function State():HasMany{
+        return $this->hasMany(State::class,'county_id');
+        }
+  
+    public function employees():HasMany{
+        return $this->hasMany(employee::class,'county_id');
+        }
   
 }
