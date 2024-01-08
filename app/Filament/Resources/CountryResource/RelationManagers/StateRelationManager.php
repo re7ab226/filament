@@ -49,4 +49,8 @@ class StateRelationManager extends RelationManager
                 ]),
             ]);
     }
+    public function isReadOnly():bool{
+        return  true;
+}
+//دي مش بتخلينا نعمل تعديل للحاجه اللي عامله معاها علاقه
 }

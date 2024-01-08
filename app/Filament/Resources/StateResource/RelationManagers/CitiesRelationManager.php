@@ -47,4 +47,7 @@ class CitiesRelationManager extends RelationManager
                 ]),
             ]);
     }
+    public function isReadOnly():bool{
+        return  true;
+}
 }

@@ -22,6 +22,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
+use Illuminate\Contracts\Support\Htmlable;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -34,7 +35,25 @@ class EmployeeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
     protected static ?int $navigationSort=2;//  (تصنيف)بيعمل جروب
+    // protected static ?string $recordTitleAttribute='f-name';
+    // public static function  getGlobalSearchResultTitle (Model $record): string | Htmlable {
 
+    //     return $record->email;
+
+    // }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['f-name', 'l-name', 'email'];
+    }
+            //دا بيخلي البحث بحاجه من دول
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+{
+    return [
+        'address' => $record->address,
+    ];
+}       //الجزء دا بيخلي وقت البحث البيانات تظهر معايا تحت  
 
     public static function form(Form $form): Form
     {

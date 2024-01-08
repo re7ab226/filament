@@ -47,4 +47,7 @@ class EmployeesRelationManager extends RelationManager
                 ]),
             ]);
     }
+    public function isReadOnly():bool{
+        return  true;
+}
 }
