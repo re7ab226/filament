@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CountryResource\RelationManagers;
 use App\Filament\Resources\CountryResource\RelationManagers\StateRelationManager;
 use App\Filament\Resources\CountryResource\RelationManagers\StatesRelationManager;
-use App\Filament\Resources\CountryResource\RelationManagers\EmployeeRelationManager;
 use App\Filament\Resources\CountryResource\RelationManagers\EmployeesRelationManager;
 
 class CountryResource extends Resource
@@ -28,7 +27,17 @@ class CountryResource extends Resource
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
     protected static ?int $navigationSort=4;//  (تصنيف)بيعمل جروب
 
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    //خاص بالعدد
+    public static function getNavigationBadgeColor(): ?string
+    {
+    // return 'warning';
+        return static::getModel()::count() > 5? 'warning' : 'sucess';
+        //خاص بلون العدد
+    }
     public static function form(Form $form): Form
     {
         return $form

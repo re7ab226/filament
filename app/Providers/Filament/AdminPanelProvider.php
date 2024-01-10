@@ -26,7 +26,12 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            
+        ->login()
+        ->registration()
+        ->passwordReset()
+        ->emailVerification()
+        ->profile()
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Gray,
@@ -37,10 +42,14 @@ class AdminPanelProvider extends PanelProvider
 
             ])
             ->font('Rubik Doodle Triangles')
-            //FOR TITLE NAME
-            ->brandName('YR')
-            //for logo
 
+            //FOR TITLE NAME
+            ->brandName('Employee Managment')
+            //for logo
+            ->navigationGroups([
+
+                'system_mangment'
+            ])
             ->brandLogo(asset('images/1600w-qJptouniZ0A.webp'))
             //اللي جنب التايتل فوق
             ->favicon(asset('images/objective-lens-icon-with-six-rainbow-colors-vector.JPG'))

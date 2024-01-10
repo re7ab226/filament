@@ -25,7 +25,17 @@ class StateResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
     protected static ?int $navigationSort=1;//  ()بيعمل للصفحه ترقيم ايه يجي قبل ايه 
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    //خاص بالعدد
+    public static function getNavigationBadgeColor(): ?string
+    {
+    // return 'warning';
+        return static::getModel()::count() > 5? 'warning' : 'sucess';
+        //خاص بلون العدد
+    }
 
     public static function form(Form $form): Form
     {

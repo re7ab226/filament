@@ -27,7 +27,17 @@ class CityResource extends Resource
     protected static ?string $modelLabel ='Employee-city';//دي اسم التنقلات
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
     protected static ?string $slug='EmployeeCities';//URL
-    
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+//خاص بالعدد
+public static function getNavigationBadgeColor(): ?string
+{
+// return 'warning';
+    return static::getModel()::count() > 5? 'warning' : 'sucess';
+    //خاص بلون العدد
+}
     protected static ?int $navigationSort=5;//  (تصنيف)بيعمل جروب
 
     public static function form(Form $form): Form

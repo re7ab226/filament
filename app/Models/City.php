@@ -19,7 +19,7 @@ class City extends Model
     public function State():BelongsTo{
         return $this->belongsTo(State::class);
     }
-  
+  //this relation for one to many
     public function employees():HasMany{
         return $this->hasMany(employee::class,'city-id');
         }

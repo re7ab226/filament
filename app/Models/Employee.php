@@ -24,13 +24,13 @@ class Employee extends Model
         'address',
     ];
     public function Country():BelongsTo{
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class,'county_id');
     }
     public function State():BelongsTo{
         return $this->belongsTo(State::class);
     }    public function Department():BelongsTo{
         return $this->belongsTo(Department::class);
     }    public function City():BelongsTo{
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class,'city-id');
     }
 }

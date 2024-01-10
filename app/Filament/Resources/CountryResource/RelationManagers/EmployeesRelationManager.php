@@ -33,9 +33,7 @@ class EmployeesRelationManager extends RelationManager
             ->recordTitleAttribute('f-name')
             ->columns([
                 Tables\Columns\TextColumn::make('f-name'),
-                Tables\Columns\TextColumn::make('email')
-                ->required()
-                ->maxLength(255),
+                Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
                 //
@@ -54,6 +52,7 @@ class EmployeesRelationManager extends RelationManager
             ]);
     }
     public function isReadOnly():bool{
-        return  true;
+        // return  false;//دي اللي تخلي الحاجه تتعدل او لا
+         return true;
 }
 }

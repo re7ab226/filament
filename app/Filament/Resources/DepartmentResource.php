@@ -25,7 +25,17 @@ class DepartmentResource extends Resource
     protected static ?string $navigationGroup='system_mangment';//  (تصنيف)بيعمل جروب
     protected static ?int $navigationSort= 3;//  (تصنيف)بيعمل جروب
 
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    //خاص بالعدد
+    public static function getNavigationBadgeColor(): ?string
+    {
+    // return 'warning';
+        return static::getModel()::count() > 5? 'warning' : 'sucess';
+        //خاص بلون العدد
+    }
 
     public static function form(Form $form): Form
     {

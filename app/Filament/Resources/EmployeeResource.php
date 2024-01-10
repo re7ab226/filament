@@ -27,6 +27,7 @@ use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
+use Filament\Notifications\Notification;
 
 class EmployeeResource extends Resource
 {
@@ -54,6 +55,21 @@ class EmployeeResource extends Resource
         'address' => $record->address,
     ];
 }       //الجزء دا بيخلي وقت البحث البيانات تظهر معايا تحت  
+public static function getGlobalSearchEloquentQuery(): Builder
+{
+    return parent::getGlobalSearchEloquentQuery()->with(['country']);
+}
+public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+//خاص بالعدد
+public static function getNavigationBadgeColor(): ?string
+{
+// return 'warning';
+    return static::getModel()::count() > 5? 'warning' : 'sucess';
+    //خاص بلون العدد
+}
 
     public static function form(Form $form): Form
     {
@@ -101,7 +117,7 @@ class EmployeeResource extends Resource
                     ->description('put your details here')
                     ->schema([
                
-// عملنا جروب للمعلومات
+                    // عملنا جروب للمعلومات
                 Forms\Components\TextInput::make('f-name')
                     ->required()
                     ->maxLength(255),
@@ -233,6 +249,16 @@ class EmployeeResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->successNotification(
+                    Notification::make()
+                         ->success()
+                         ->title('Employee-deleted')
+                         ->body('The user has been Employee deleted successfully.'),
+                )
+                // ->successNotificationTitle('Employee deleted succefully'),
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
