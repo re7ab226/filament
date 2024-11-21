@@ -82,8 +82,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->tenant(Team::class,ownershipRelationship: 'team',slugAttribute: 'slug')
+            ->tenant(Team::class,ownershipRelationship: 'Teams',slugAttribute: 'slug')
             ->tenantRegistration(RegisterTeam::class)
-            ->tenantProfile(EditTeamProfile::class);
+            ->tenantProfile(EditTeamProfile::class)
+            ->tenantRoutePrefix('team');
+            ;
     }
 }
