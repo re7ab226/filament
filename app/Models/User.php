@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable implements FilamentUser, HasTenants
+class User extends Authenticatable implements FilamentUser,HasTenants
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -70,6 +70,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
  
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->teams->contains($tenant);
+        return $this->teams()->whereKey($tenant)->exists();
     }
 }
